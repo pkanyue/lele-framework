@@ -22,6 +22,9 @@ public class OssConfig {
     /** 下载接入点 */
     private String downloadEndpoint;
 
+    /** 如果是本地存储时生效，文件存储根路径 */
+    private String rootPath;
+
     public String getType() {
         return type;
     }
@@ -34,7 +37,7 @@ public class OssConfig {
         if (type.equals(TYPE_ALIYUN_OSS)) {
             return StrKit.notBlank(endpoint) && StrKit.notBlank(accessId) && StrKit.notBlank(accessKey) && StrKit.notBlank(bucket) && StrKit.notBlank(downloadEndpoint);
         } else if (type.equals(TYPE_SYSTEM)) {
-            return StrKit.notBlank(bucket) && StrKit.notBlank(downloadEndpoint);
+            return StrKit.notBlank(bucket) && StrKit.notBlank(downloadEndpoint) && StrKit.notBlank(rootPath);
         } else {
             return false;
         }
@@ -78,5 +81,13 @@ public class OssConfig {
 
     public void setDownloadEndpoint(String downloadEndpoint) {
         this.downloadEndpoint = downloadEndpoint;
+    }
+
+    public String getRootPath() {
+        return rootPath;
+    }
+
+    public void setRootPath(String rootPath) {
+        this.rootPath = rootPath;
     }
 }
