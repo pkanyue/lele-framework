@@ -9,6 +9,11 @@ import java.io.Serializable;
  */
 public class JwtToken implements Serializable {
 
+    /** 用户id */
+    private String userId;
+    /** 版本号 */
+    private String version;
+
     public JwtToken() {
 
     }
@@ -17,11 +22,6 @@ public class JwtToken implements Serializable {
         this.userId = userId;
         this.version = version;
     }
-
-    /** 用户id */
-    private String userId;
-    /** 版本号 */
-    private String version;
 
     public String getUserId() {
         return userId;

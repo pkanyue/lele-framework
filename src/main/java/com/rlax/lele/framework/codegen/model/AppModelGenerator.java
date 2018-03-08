@@ -24,7 +24,7 @@ public class AppModelGenerator {
         System.out.println(config.toString());
 
         if (StrKit.isBlank(config.getModelpackage())) {
-            System.err.println("jboot.admin.model.ge.modelpackage 不可为空");
+            System.err.println("lele.ge.model.modelpackage 不可为空");
             System.exit(0);
         }
 

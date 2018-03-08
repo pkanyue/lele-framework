@@ -8,7 +8,7 @@ import io.jboot.config.annotation.PropertyConfig;
  * @author Rlax
  *
  */
-@PropertyConfig(prefix="jboot.admin.serviceimpl.ge")
+@PropertyConfig(prefix="lele.ge.serviceimpl")
 public class AppServiceImplGeneratorConfig {
 
     /** entity 包名 */

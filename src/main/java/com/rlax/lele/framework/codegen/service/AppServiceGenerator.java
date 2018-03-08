@@ -23,12 +23,12 @@ public class AppServiceGenerator {
         System.out.println(config.toString());
 
         if (StrKit.isBlank(config.getModelpackage())) {
-            System.err.println("jboot.admin.service.ge.modelpackage 不可为空");
+            System.err.println("lele.ge.service.modelpackage 不可为空");
             System.exit(0);
         }
 
         if (StrKit.isBlank(config.getServicepackage())) {
-            System.err.println("jboot.admin.service.ge.servicepackage 不可为空");
+            System.err.println("lele.ge.service.servicepackage 不可为空");
             System.exit(0);
         }
 

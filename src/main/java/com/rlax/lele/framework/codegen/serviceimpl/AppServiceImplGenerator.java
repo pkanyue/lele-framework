@@ -22,17 +22,17 @@ public class AppServiceImplGenerator {
         System.out.println(config.toString());
 
         if (StrKit.isBlank(config.getModelpackage())) {
-            System.err.println("jboot.admin.serviceimpl.ge.modelpackage 不可为空");
+            System.err.println("lele.ge.serviceimpl.modelpackage 不可为空");
             System.exit(0);
         }
 
         if (StrKit.isBlank(config.getServicepackage())) {
-            System.err.println("jboot.admin.serviceimpl.ge.servicepackage 不可为空");
+            System.err.println("lele.ge.serviceimpl.servicepackage 不可为空");
             System.exit(0);
         }
 
         if (StrKit.isBlank(config.getServiceimplpackage())) {
-            System.err.println("jboot.admin.serviceimpl.ge.serviceimplpackage 不可为空");
+            System.err.println("lele.ge.serviceimpl.serviceimplpackage 不可为空");
             System.exit(0);
         }
 

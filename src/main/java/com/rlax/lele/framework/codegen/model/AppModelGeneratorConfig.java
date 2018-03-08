@@ -8,7 +8,7 @@ import io.jboot.config.annotation.PropertyConfig;
  * @author Rlax
  *
  */
-@PropertyConfig(prefix="jboot.admin.model.ge")
+@PropertyConfig(prefix="lele.ge.model")
 public class AppModelGeneratorConfig {
 
     /** entity 包名 */

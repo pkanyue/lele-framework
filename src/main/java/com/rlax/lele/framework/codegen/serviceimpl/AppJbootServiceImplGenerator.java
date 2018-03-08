@@ -42,8 +42,6 @@ public class AppJbootServiceImplGenerator extends BaseModelGenerator {
         this.servicePackage = servicePackage;
         this.serviceImplPackage = serviceImplPackage;
         this.template = "io/jboot/codegen/service/service_impl_template.jf";
-
-
     }
 
     @Override
