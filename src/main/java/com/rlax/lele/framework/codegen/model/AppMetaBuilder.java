@@ -3,6 +3,7 @@ package com.rlax.lele.framework.codegen.model;
 import com.jfinal.plugin.activerecord.dialect.OracleDialect;
 import com.jfinal.plugin.activerecord.generator.MetaBuilder;
 import com.jfinal.plugin.activerecord.generator.TableMeta;
+import io.jboot.utils.StringUtils;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
@@ -25,11 +26,14 @@ public class AppMetaBuilder extends MetaBuilder {
 
     @Override
     protected boolean isSkipTable(String tableName) {
-        for (String skip : skipPre) {
-            if (tableName.startsWith(skip)) {
-                return true;
+        if (StringUtils.isNotBlank(skipPre)) {
+            for (String skip : skipPre) {
+                if (tableName.startsWith(skip)) {
+                    return true;
+                }
             }
         }
+
         return false;
     }
 

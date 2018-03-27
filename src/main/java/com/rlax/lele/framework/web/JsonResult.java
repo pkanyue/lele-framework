@@ -26,8 +26,16 @@ public class JsonResult {
         return Ret.ok(MESSAGE, "操作成功").set(CODE, SUCCESS_CODE);
     }
 
+    public static Ret buildSuccess(String msg) {
+        return Ret.ok(MESSAGE, msg).set(CODE, SUCCESS_CODE);
+    }
+
     public static Ret buildSuccess(Object t) {
         return buildSuccess().set(DATA, t);
+    }
+
+    public static Ret buildSuccess(String msg, Object t) {
+        return buildSuccess(msg).set(DATA, t);
     }
 
     public static Ret buildError() {
