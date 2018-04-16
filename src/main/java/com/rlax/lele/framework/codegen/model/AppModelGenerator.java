@@ -4,6 +4,7 @@ import com.jfinal.kit.PathKit;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.generator.TableMeta;
 import com.rlax.lele.framework.codegen.dto.AppDTOGenerator;
+import com.rlax.lele.framework.codegen.status.AppStatusGenerator;
 import io.jboot.Jboot;
 import io.jboot.codegen.CodeGenHelpler;
 import io.jboot.codegen.model.JbootBaseModelGenerator;
@@ -29,18 +30,11 @@ public class AppModelGenerator {
             System.exit(0);
         }
 
-        if (StrKit.isBlank(config.getDtopackage())) {
-            System.err.println("lele.ge.model.dtopackage 不可为空");
-            System.exit(0);
-        }
-
         String modelPackage = config.getModelpackage();
         String baseModelPackage = modelPackage + ".base";
-        String dotPackage = config.getDtopackage();
 
         String modelDir = PathKit.getWebRootPath() + "/src/main/java/" + modelPackage.replace(".", "/");
         String baseModelDir = PathKit.getWebRootPath() + "/src/main/java/" + baseModelPackage.replace(".", "/");
-        String dtoDir = PathKit.getWebRootPath() + "/src/main/java/" + dotPackage.replace(".", "/");
 
         System.out.println("start generate...");
         System.out.println("generate dir:" + modelDir);
@@ -62,7 +56,17 @@ public class AppModelGenerator {
 
         new JbootBaseModelGenerator(baseModelPackage, baseModelDir).generate(tableMetaList);
         new JbootModelnfoGenerator(modelPackage, baseModelPackage, modelDir).generate(tableMetaList);
-        new AppDTOGenerator(dotPackage, dtoDir).generate(tableMetaList);
+
+        if (StrKit.notBlank(config.getDtopackage())) {
+            String dotPackage = config.getDtopackage();
+            String dtoDir = PathKit.getWebRootPath() + "/src/main/java/" + dotPackage.replace(".", "/");
+            new AppDTOGenerator(dotPackage, dtoDir).generate(tableMetaList);
+        }
+        if (StrKit.notBlank(config.getStatuspackage())) {
+            String statusPackage = config.getStatuspackage();
+            String statusDir = PathKit.getWebRootPath() + "/src/main/java/" + statusPackage.replace(".", "/");
+            new AppStatusGenerator(statusPackage, statusDir).generate(tableMetaList);
+        }
 
         System.out.println("entity generate finished !!!");
 

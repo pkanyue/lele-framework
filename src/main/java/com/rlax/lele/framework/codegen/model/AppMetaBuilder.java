@@ -1,13 +1,14 @@
 package com.rlax.lele.framework.codegen.model;
 
 import com.jfinal.plugin.activerecord.dialect.OracleDialect;
+import com.jfinal.plugin.activerecord.generator.ColumnMeta;
 import com.jfinal.plugin.activerecord.generator.MetaBuilder;
 import com.jfinal.plugin.activerecord.generator.TableMeta;
 import io.jboot.utils.StringUtils;
 
 import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.List;
 
 /**
  * 自定义 MetaBuilder，处理表前缀跳过生成
@@ -54,5 +55,25 @@ public class AppMetaBuilder extends MetaBuilder {
         } else {
             super.buildPrimaryKey(tableMeta);
         }
+    }
+
+    @Override
+    protected void buildColumnMetas(TableMeta tableMeta) throws SQLException {
+        super.buildColumnMetas(tableMeta);
+
+        String sql = "show full columns from " + tableMeta.name;
+        Statement stm = conn.createStatement();
+        ResultSet rs = stm.executeQuery(sql);
+
+        while (rs.next()) {
+            for (ColumnMeta col : tableMeta.columnMetas) {
+                if (col.name.equals(rs.getString("Field"))) {
+                    col.remarks = rs.getString("Comment");
+                }
+            }
+        }
+
+        rs.close();
+        stm.close();
     }
 }

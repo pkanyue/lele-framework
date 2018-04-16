@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.rlax.lele.framework.codegen.dto;
+package com.rlax.lele.framework.codegen.status;
 
 import com.jfinal.kit.Kv;
 import com.jfinal.kit.StrKit;
@@ -27,22 +27,22 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-public class AppDTOGenerator extends BaseModelGenerator {
+public class AppStatusGenerator extends BaseModelGenerator {
 
-    public AppDTOGenerator(String baseModelPackageName, String baseModelOutputDir) {
+    public AppStatusGenerator(String baseModelPackageName, String baseModelOutputDir) {
         super(baseModelPackageName, baseModelOutputDir);
 
-        this.template = "com/rlax/lele/framework/codegen/dto/dto_template.jf";
+        this.template = "com/rlax/lele/framework/codegen/status/status_template.jf";
 
 
     }
 
     @Override
     public void generate(List<TableMeta> tableMetas) {
-        System.out.println("dto model ...");
-        System.out.println("dto Output Dir: " + baseModelOutputDir);
+        System.out.println("Generate status ...");
+        System.out.println("status Output Dir: " + baseModelOutputDir);
 
-        Engine engine = Engine.create("forDTO");
+        Engine engine = Engine.create("forStatus");
         engine.setSourceFactory(new ClassPathSourceFactory());
         engine.addSharedMethod(new StrKit());
         engine.addSharedObject("getterTypeMap", getterTypeMap);
@@ -60,7 +60,7 @@ public class AppDTOGenerator extends BaseModelGenerator {
         data.set("generateChainSetter", generateChainSetter);
         data.set("tableMeta", tableMeta);
 
-        Engine engine = Engine.use("forDTO");
+        Engine engine = Engine.use("forStatus");
         tableMeta.baseModelContent = engine.getTemplate(template).renderToString(data);
     }
 
@@ -74,7 +74,13 @@ public class AppDTOGenerator extends BaseModelGenerator {
             dir.mkdirs();
         }
 
-        String target = baseModelOutputDir + File.separator + tableMeta.modelName + "DTO.java";
+        String target = baseModelOutputDir + File.separator + tableMeta.modelName + "Status.java";
+
+        File targetFile = new File(target);
+        if (targetFile.exists()) {
+            return;
+        }
+
         FileWriter fw = new FileWriter(target);
         try {
             fw.write(tableMeta.baseModelContent);
