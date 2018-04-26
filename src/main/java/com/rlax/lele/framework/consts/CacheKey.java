@@ -39,4 +39,7 @@ public class CacheKey {
 
 	/** jwt 缓存 */
 	public static final String CACHE_JWT = "jwt-cache";
+
+	/** im token 缓存 */
+	public static final String CACHE_IM_TOKEN = "im-token-cache";
 }
