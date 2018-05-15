@@ -5,14 +5,19 @@ package com.rlax.lele.framework.consts;
  * @author Rlax
  *
  */
-public class Consts
-{
+public class Consts {
+	/** session cookie name */
+	public static final String SESSION_COOKIE_NAME = "sid";
+
+	/** uid cookie name */
+	public static final String UID_COOKIE_NAME = "uid";
+
 	/** session 用户信息key */
 	public static final String SESSION_USER = "user";
 	/** session 用户角色key */
 	public static final String SESSION_USER_ROLE = "userRole";
 	public static final String SESSION_EAMIL_USER="email_val";
-	public static final String SESSION_MESSAGE = "_message";
+	public static final String SESSION_MESSAGE = "message";
 	/** 短信session值 */
 	public static final String SESSION_SMS = "_sms_val";
 	
