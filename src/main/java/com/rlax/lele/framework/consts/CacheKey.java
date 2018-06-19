@@ -5,7 +5,7 @@ package com.rlax.lele.framework.consts;
  * @author Rlax
  *
  */
-public class CacheKey {
+public final class CacheKey {
 
 	/** 基础数据 对应 data 表 keyValue缓存在cache的name */
 	public static final String CACHE_KEYVALUE = "keyValue";
@@ -42,4 +42,7 @@ public class CacheKey {
 
 	/** im token 缓存 */
 	public static final String CACHE_IM_TOKEN = "im-token-cache";
+
+	/** token 缓存 */
+	public static final String CACHE_TOKEN = "token-cache";
 }
