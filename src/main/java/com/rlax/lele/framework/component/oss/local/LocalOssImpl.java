@@ -5,6 +5,7 @@ import com.jfinal.log.Log;
 import com.rlax.lele.framework.component.oss.BaseOss;
 import com.rlax.lele.framework.component.oss.FileInfo;
 import com.rlax.lele.framework.component.oss.OssConfig;
+import io.jboot.utils.FileUtils;
 
 import java.io.File;
 import java.io.InputStream;

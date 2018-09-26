@@ -27,6 +27,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * DTO 生成
+ * @author Rlax
+ *
+ */
 public class AppDTOGenerator extends BaseModelGenerator {
 
     public AppDTOGenerator(String baseModelPackageName, String baseModelOutputDir) {

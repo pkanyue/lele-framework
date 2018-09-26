@@ -25,7 +25,20 @@ public class SafeControlHandler extends Handler {
             return;
         }
 
+        if (target.toLowerCase().endsWith(".ini")) {
+            HandlerKit.renderError404(request, response, isHandled);
+            return;
+        }
 
+        if (target.toLowerCase().endsWith(".properties")) {
+            HandlerKit.renderError404(request, response, isHandled);
+            return;
+        }
+
+        if (target.toLowerCase().endsWith(".xml")) {
+            HandlerKit.renderError404(request, response, isHandled);
+            return;
+        }
         next.handle(target, request, response, isHandled);
     }
 }

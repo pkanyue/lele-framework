@@ -8,7 +8,7 @@ import com.rlax.lele.framework.codegen.status.AppStatusGenerator;
 import io.jboot.Jboot;
 import io.jboot.codegen.CodeGenHelpler;
 import io.jboot.codegen.model.JbootBaseModelGenerator;
-import io.jboot.codegen.model.JbootModeGenerator;
+import io.jboot.codegen.model.JbootModelGenerator;
 
 import javax.sql.DataSource;
 import java.util.List;
@@ -55,7 +55,7 @@ public class AppModelGenerator {
         CodeGenHelpler.excludeTables(tableMetaList, config.getExcludedtable());
 
         new JbootBaseModelGenerator(baseModelPackage, baseModelDir).generate(tableMetaList);
-        new JbootModeGenerator(modelPackage, baseModelPackage, modelDir).generate(tableMetaList);
+        new JbootModelGenerator(modelPackage, baseModelPackage, modelDir).generate(tableMetaList);
 
         if (StrKit.notBlank(config.getDtopackage())) {
             String dotPackage = config.getDtopackage();
