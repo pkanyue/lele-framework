@@ -5,7 +5,7 @@ import com.github.qcloudsms.httpclient.HTTPException;
 import com.rlax.lele.framework.component.sms.BaseSms;
 import com.rlax.lele.framework.component.sms.SmsException;
 import io.jboot.Jboot;
-import io.jboot.utils.StringUtils;
+import io.jboot.utils.StrUtils;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,7 +57,7 @@ public class QcloudSmsImpl extends BaseSms {
 
         try {
             SmsSingleSender ssender = new SmsSingleSender(qcloudSmsConfig.getAppid(), qcloudSmsConfig.getAppkey());
-            ssender.sendWithParam("86", phoneNo, StringUtils.toInt(templateCode, 1), list, "", "", "");
+            ssender.sendWithParam("86", phoneNo, Integer.parseInt(templateCode), list, "", "", "");
             // 签名参数未提供或者为空时，会使用默认签名发送短信
         } catch (HTTPException e) {
             // HTTP响应码错误

@@ -5,7 +5,7 @@ import com.rlax.lele.framework.component.search.BaseSearch;
 import com.rlax.lele.framework.component.search.SearchDocument;
 import com.rlax.lele.framework.component.search.SearchException;
 import io.jboot.Jboot;
-import io.jboot.utils.StringUtils;
+import io.jboot.utils.StrUtils;
 import org.elasticsearch.action.DocWriteResponse;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
@@ -60,13 +60,13 @@ public class ElasticSearchImpl extends BaseSearch {
 
     @Override
     public boolean create(SearchDocument searchDocument) {
-        if (!StringUtils.areNotBlank(searchDocument.getIndex(), searchDocument.getType())) {
+        if (!StrUtils.areNotEmpty(searchDocument.getIndex(), searchDocument.getType())) {
             throw new SearchException("create document must index and type not empty");
         }
 
         IndexRequestBuilder builder = client.prepareIndex(searchDocument.getIndex(), searchDocument.getType());
 
-        if (StringUtils.isNotBlank(searchDocument.getId())) {
+        if (StrUtils.isNotBlank(searchDocument.getId())) {
             builder.setId(searchDocument.getId());
         }
 
@@ -79,12 +79,12 @@ public class ElasticSearchImpl extends BaseSearch {
         BulkRequestBuilder bulkRequest = client.prepareBulk();
 
         for (SearchDocument searchDocument : list) {
-            if (!StringUtils.areNotBlank(searchDocument.getIndex(), searchDocument.getType())) {
+            if (!StrUtils.areNotEmpty(searchDocument.getIndex(), searchDocument.getType())) {
                 throw new SearchException("create document must index and type not empty");
             }
 
             IndexRequestBuilder builder = client.prepareIndex(searchDocument.getIndex(), searchDocument.getType());
-            if (StringUtils.isNotBlank(searchDocument.getId())) {
+            if (StrUtils.isNotBlank(searchDocument.getId())) {
                 builder.setId(searchDocument.getId());
             }
             builder.setSource(searchDocument.getSource());
@@ -98,7 +98,7 @@ public class ElasticSearchImpl extends BaseSearch {
 
     @Override
     public boolean update(SearchDocument searchDocument) {
-        if (!StringUtils.areNotBlank(searchDocument.getIndex(), searchDocument.getType(), searchDocument.getId())) {
+        if (!StrUtils.areNotEmpty(searchDocument.getIndex(), searchDocument.getType(), searchDocument.getId())) {
             throw new SearchException("update document must index, type, id are not empty");
         }
 
@@ -111,7 +111,7 @@ public class ElasticSearchImpl extends BaseSearch {
 
     @Override
     public boolean delete(SearchDocument searchDocument) {
-        if (!StringUtils.areNotBlank(searchDocument.getIndex(), searchDocument.getType(), searchDocument.getId())) {
+        if (!StrUtils.areNotEmpty(searchDocument.getIndex(), searchDocument.getType(), searchDocument.getId())) {
             throw new SearchException("delete document must index, type, id are not empty");
         }
 

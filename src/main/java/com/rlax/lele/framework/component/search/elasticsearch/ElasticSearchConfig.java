@@ -2,7 +2,7 @@ package com.rlax.lele.framework.component.search.elasticsearch;
 
 import com.rlax.lele.framework.component.sms.SmsConfig;
 import io.jboot.config.annotation.PropertyConfig;
-import io.jboot.utils.StringUtils;
+import io.jboot.utils.StrUtils;
 
 /**
  * elasticsearch 配置
@@ -26,7 +26,7 @@ public class ElasticSearchConfig extends SmsConfig {
 
 
     public boolean isConfigOk() {
-        return StringUtils.isNotBlank(host);
+        return StrUtils.isNotBlank(host);
     }
 
     public String getHost() {

@@ -4,11 +4,10 @@ import com.jfinal.plugin.activerecord.dialect.OracleDialect;
 import com.jfinal.plugin.activerecord.generator.ColumnMeta;
 import com.jfinal.plugin.activerecord.generator.MetaBuilder;
 import com.jfinal.plugin.activerecord.generator.TableMeta;
-import io.jboot.utils.StringUtils;
+import io.jboot.utils.StrUtils;
 
 import javax.sql.DataSource;
 import java.sql.*;
-import java.util.List;
 
 /**
  * 自定义 MetaBuilder，处理表前缀跳过生成
@@ -27,7 +26,7 @@ public class AppMetaBuilder extends MetaBuilder {
 
     @Override
     protected boolean isSkipTable(String tableName) {
-        if (StringUtils.isNotBlank(skipPre)) {
+        if (StrUtils.isNotBlank(skipPre)) {
             for (String skip : skipPre) {
                 if (tableName.startsWith(skip)) {
                     return true;
