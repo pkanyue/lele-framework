@@ -1,14 +1,14 @@
 package com.rlax.lele.framework.codegen.serviceimpl;
 
 
-import io.jboot.config.annotation.PropertyConfig;
+import io.jboot.app.config.annotation.ConfigModel;
 
 /**
  * api代码生成配置
  * @author Rlax
  *
  */
-@PropertyConfig(prefix="lele.ge.serviceimpl")
+@ConfigModel(prefix="lele.ge.serviceimpl")
 public class AppServiceImplGeneratorConfig {
 
     /** entity 包名 */

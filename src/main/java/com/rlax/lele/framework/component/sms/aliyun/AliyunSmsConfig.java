@@ -2,14 +2,14 @@ package com.rlax.lele.framework.component.sms.aliyun;
 
 import com.jfinal.kit.StrKit;
 import com.rlax.lele.framework.component.sms.SmsConfig;
-import io.jboot.config.annotation.PropertyConfig;
+import io.jboot.app.config.annotation.ConfigModel;
 
 /**
  * 阿里云短信配置
  * @author Rlax
  *
  */
-@PropertyConfig(prefix = "lele.sms.aliyun")
+@ConfigModel(prefix = "lele.sms.aliyun")
 public class AliyunSmsConfig extends SmsConfig {
 
     private String accessId;

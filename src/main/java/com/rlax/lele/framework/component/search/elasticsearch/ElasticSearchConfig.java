@@ -1,15 +1,15 @@
 package com.rlax.lele.framework.component.search.elasticsearch;
 
 import com.rlax.lele.framework.component.sms.SmsConfig;
-import io.jboot.config.annotation.PropertyConfig;
-import io.jboot.utils.StrUtils;
+import io.jboot.app.config.annotation.ConfigModel;
+import io.jboot.utils.StrUtil;
 
 /**
  * elasticsearch 配置
  * @author Rlax
  *
  */
-@PropertyConfig(prefix = "lele.search.elasticsearch")
+@ConfigModel(prefix = "lele.search.elasticsearch")
 public class ElasticSearchConfig extends SmsConfig {
 
     private String host;
@@ -26,7 +26,7 @@ public class ElasticSearchConfig extends SmsConfig {
 
 
     public boolean isConfigOk() {
-        return StrUtils.isNotBlank(host);
+        return StrUtil.isNotBlank(host);
     }
 
     public String getHost() {

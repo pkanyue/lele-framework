@@ -28,14 +28,14 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
 		MuitiLoginToken token = (MuitiLoginToken) _token;
 		
 		String username = (String) token.getPrincipal();
-		AtomicInteger atomicInteger = Jboot.me().getCache().get(CacheKey.CACHE_SHIRO_PASSWORDRETRY, username);
+		AtomicInteger atomicInteger = Jboot.getCache().get(CacheKey.CACHE_SHIRO_PASSWORDRETRY, username);
 
 		if (atomicInteger == null) {
 			atomicInteger = new AtomicInteger(0);
 		} else {
 			atomicInteger.incrementAndGet();
 		}
-		Jboot.me().getCache().put(CacheKey.CACHE_SHIRO_PASSWORDRETRY, username, atomicInteger, lockedSeconds);
+		Jboot.getCache().put(CacheKey.CACHE_SHIRO_PASSWORDRETRY, username, atomicInteger, lockedSeconds);
 
 		if (atomicInteger.get() > allowRetryCount) {
 			throw new ExcessiveAttemptsException();
@@ -53,7 +53,7 @@ public class RetryLimitHashedCredentialsMatcher extends HashedCredentialsMatcher
 		}
 		
 		if (matches) {
-			Jboot.me().getCache().remove(CacheKey.CACHE_SHIRO_PASSWORDRETRY, username);
+			Jboot.getCache().remove(CacheKey.CACHE_SHIRO_PASSWORDRETRY, username);
 		}
 		
 		return matches;

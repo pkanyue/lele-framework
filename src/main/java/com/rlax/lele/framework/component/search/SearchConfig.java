@@ -1,13 +1,13 @@
 package com.rlax.lele.framework.component.search;
 
-import io.jboot.config.annotation.PropertyConfig;
+import io.jboot.app.config.annotation.ConfigModel;
 
 /**
  * Search config
  * @author Rlax
  *
  */
-@PropertyConfig(prefix = "lele.search")
+@ConfigModel(prefix = "lele.search")
 public class SearchConfig {
 
     public static final String TYPE_ELASTICSEARCH = "type_elasticsearch";

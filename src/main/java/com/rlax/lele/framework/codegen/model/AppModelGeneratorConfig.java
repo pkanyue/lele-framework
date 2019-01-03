@@ -1,14 +1,14 @@
 package com.rlax.lele.framework.codegen.model;
 
 
-import io.jboot.config.annotation.PropertyConfig;
+import io.jboot.app.config.annotation.ConfigModel;
 
 /**
  * model代码生成配置
  * @author Rlax
  *
  */
-@PropertyConfig(prefix="lele.ge.model")
+@ConfigModel(prefix="lele.ge.model")
 public class AppModelGeneratorConfig {
 
     /** entity 包名 */

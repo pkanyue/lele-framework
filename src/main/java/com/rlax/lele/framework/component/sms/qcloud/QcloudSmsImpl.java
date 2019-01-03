@@ -5,7 +5,7 @@ import com.github.qcloudsms.httpclient.HTTPException;
 import com.rlax.lele.framework.component.sms.BaseSms;
 import com.rlax.lele.framework.component.sms.SmsException;
 import io.jboot.Jboot;
-import io.jboot.utils.StrUtils;
+import io.jboot.utils.StrUtil;
 import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

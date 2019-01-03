@@ -4,7 +4,7 @@ import com.jfinal.plugin.activerecord.dialect.OracleDialect;
 import com.jfinal.plugin.activerecord.generator.ColumnMeta;
 import com.jfinal.plugin.activerecord.generator.MetaBuilder;
 import com.jfinal.plugin.activerecord.generator.TableMeta;
-import io.jboot.utils.StrUtils;
+import io.jboot.utils.StrUtil;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -26,7 +26,7 @@ public class AppMetaBuilder extends MetaBuilder {
 
     @Override
     protected boolean isSkipTable(String tableName) {
-        if (StrUtils.isNotBlank(skipPre)) {
+        if (StrUtil.isNotBlank(skipPre)) {
             for (String skip : skipPre) {
                 if (tableName.startsWith(skip)) {
                     return true;

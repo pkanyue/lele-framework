@@ -24,46 +24,46 @@ public class ShiroCache<K, V> implements Cache<K, V> {
 	
 	@Override
     public V get(K key) throws CacheException {
-		return Jboot.me().getCache().get(cacheName, key);
+		return Jboot.getCache().get(cacheName, key);
 	}
 
 	@Override
     public V put(K key, V value) throws CacheException {
-		Jboot.me().getCache().put(cacheName, key, value);
+		Jboot.getCache().put(cacheName, key, value);
 		return value;
 	}
 
 	@Override
     public V remove(K key) throws CacheException {
-		V value = Jboot.me().getCache().get(cacheName, key);
-		Jboot.me().getCache().remove(cacheName, key);
+		V value = Jboot.getCache().get(cacheName, key);
+		Jboot.getCache().remove(cacheName, key);
 		return value;
 	}
 
 	@Override
     public void clear() throws CacheException {
-		Jboot.me().getCache().removeAll(cacheName);		
+		Jboot.getCache().removeAll(cacheName);		
 	}
 
 	@Override
     public int size() {
-		return Jboot.me().getCache().getKeys(cacheName).size();
+		return Jboot.getCache().getKeys(cacheName).size();
 	}
 
 	@Override
     public Set<K> keys() {
-		return (Set<K>) Jboot.me().getCache().getKeys(cacheName);
+		return (Set<K>) Jboot.getCache().getKeys(cacheName);
 	}
 
 	@Override
     public Collection<V> values() {
 		Collection<V> values = Collections.emptyList();
-		List keys = Jboot.me().getCache().getKeys(cacheName);
+		List keys = Jboot.getCache().getKeys(cacheName);
 
 		if (!CollectionUtils.isEmpty(keys)) {
 			values = new ArrayList<V>(keys.size());
 			for (Object key : keys) {
-				V value = Jboot.me().getCache().get(cacheName, key);
+				V value = Jboot.getCache().get(cacheName, key);
 				if (value != null) {
 					values.add(value);
 				}

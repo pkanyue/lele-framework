@@ -1,22 +1,22 @@
 package com.rlax.lele.framework.component.sms.qcloud;
 
 import com.rlax.lele.framework.component.sms.SmsConfig;
-import io.jboot.config.annotation.PropertyConfig;
-import io.jboot.utils.StrUtils;
+import io.jboot.app.config.annotation.ConfigModel;
+import io.jboot.utils.StrUtil;
 
 /**
  * 腾讯云短信配置
  * @author Rlax
  *
  */
-@PropertyConfig(prefix = "lele.sms.qcloud")
+@ConfigModel(prefix = "lele.sms.qcloud")
 public class QcloudSmsConfig extends SmsConfig {
 
     private Integer appid;
     private String appkey;
 
     public boolean isConfigOk() {
-        return StrUtils.isNotBlank(appid) && StrUtils.isNotBlank(appkey);
+        return StrUtil.isNotBlank(appid) && StrUtil.isNotBlank(appkey);
     }
 
     public Integer getAppid() {

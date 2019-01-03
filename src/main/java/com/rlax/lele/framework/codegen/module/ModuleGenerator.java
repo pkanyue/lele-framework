@@ -4,9 +4,9 @@ import com.jfinal.kit.PathKit;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.generator.TableMeta;
 import com.jfinal.template.Engine;
-import io.jboot.Jboot;
+import io.jboot.app.JbootApplication;
 import io.jboot.codegen.CodeGenHelpler;
-import io.jboot.utils.StrUtils;
+import io.jboot.utils.StrUtil;
 
 import java.io.File;
 import java.util.*;
@@ -118,9 +118,9 @@ public class ModuleGenerator {
         String serviceApiModuleName = "/module-" + moduleName + "-service-api";
         String serviceProviderModuleName = "/module-" + moduleName + "-service-provider";
 
-        Jboot.setBootArg("jboot.datasource.url", dbUrl);
-        Jboot.setBootArg("jboot.datasource.user", dbUser);
-        Jboot.setBootArg("jboot.datasource.password", dbPassword);
+        JbootApplication.setBootArg("jboot.datasource.url", dbUrl);
+        JbootApplication.setBootArg("jboot.datasource.user", dbUser);
+        JbootApplication.setBootArg("jboot.datasource.password", dbPassword);
 
         String baseModelPackage = modelPackage + ".base";
 
@@ -130,9 +130,9 @@ public class ModuleGenerator {
         System.out.println("start generate... dir:" + modelDir);
 
         List<TableMeta> tableMetaList = CodeGenHelpler.createMetaBuilder().build();
-        if (StrUtils.isNotBlank(dbTables)) {
+        if (StrUtil.isNotBlank(dbTables)) {
             List<TableMeta> newTableMetaList = new ArrayList<TableMeta>();
-            Set<String> excludeTableSet = StrUtils.splitToSet(dbTables, ",");
+            Set<String> excludeTableSet = StrUtil.splitToSet(dbTables, ",");
             for (TableMeta tableMeta : tableMetaList) {
                 if (excludeTableSet.contains(tableMeta.name.toLowerCase())) {
                     newTableMetaList.add(tableMeta);

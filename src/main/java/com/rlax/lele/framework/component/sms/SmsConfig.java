@@ -1,13 +1,13 @@
 package com.rlax.lele.framework.component.sms;
 
-import io.jboot.config.annotation.PropertyConfig;
+import io.jboot.app.config.annotation.ConfigModel;
 
 /**
  * aliyun config
  * @author Rlax
  *
  */
-@PropertyConfig(prefix = "lele.sms")
+@ConfigModel(prefix = "lele.sms")
 public class SmsConfig {
 
     public static final String TYPE_ALIYUN_SMS = "aliyun_sms";
