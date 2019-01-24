@@ -1,0 +1,17 @@
+package #(providerPackage);
+
+#if (ifRpc)
+import io.jboot.components.rpc.annotation.RPCBean;
+#end
+import io.jboot.aop.annotation.Bean;
+import #(servicePackage).#(tableMeta.modelName)Service;
+import #(modelPackage).#(tableMeta.modelName);
+import io.jboot.service.JbootServiceBase;
+
+#if (ifRpc)
+@RPCBean
+#end
+@Bean
+public class #(tableMeta.modelName)ServiceProvider extends JbootServiceBase<#(tableMeta.modelName)> implements #(tableMeta.modelName)Service {
+
+}

@@ -4,10 +4,16 @@ import com.jfinal.kit.PathKit;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.generator.TableMeta;
 import com.jfinal.template.Engine;
+import com.rlax.lele.framework.codegen.model.AppMetaBuilder;
+import com.rlax.lele.framework.codegen.module.generator.BaseModelGenerator;
+import com.rlax.lele.framework.codegen.module.generator.ModelGenerator;
+import com.rlax.lele.framework.codegen.module.generator.ServiceApiGenerator;
+import com.rlax.lele.framework.codegen.module.generator.ServiceProviderGenerator;
 import io.jboot.app.JbootApplication;
 import io.jboot.codegen.CodeGenHelpler;
 import io.jboot.utils.StrUtil;
 
+import javax.sql.DataSource;
 import java.io.File;
 import java.util.*;
 
@@ -19,41 +25,61 @@ import java.util.*;
  */
 public class ModuleGenerator {
 
+    /** pom groupId */
+    private String groupId;
+    /** 项目maven父模块名称，例如：cp */
+    private String parentShortName;
+    /** 项目版本 */
+    private String projectVersion;
+    /** 包含开始表前缀，多个逗号分割 */
+    private String includedtableprefixes;
+
+    /** 是否RPC模式，RPC模式将会使用RPC注解标注 */
+    private boolean ifRpc;
+    /** 模块名称，如：jboot-admin-service-user */
     private String moduleName;
     private String dbUrl;
     private String dbUser;
     private String dbPassword;
+    /** 包含表，因为前面有表前缀条件，所以这块处理特殊情况，为全部表名 */
     private String dbTables;
-    private String modelPackage;
-    private String servicePackage;
-
+    /**
+     * 基础 base 包路径，根据该路径自动生成其他路径
+     * basePackage.model
+     * basePackage.service.api
+     * basePackage.service.provider
+     * basePackage.web
+     */
+    private String basePackage;
+    /** 项目基础路径，代码将根据该路径生成 */
     private String basePath;
 
-
-    public ModuleGenerator(String moduleName, String dbUrl, String dbUser, String dbPassword, String dbTables, String modelPackage, String servicePackage) {
+    public ModuleGenerator(String groupId, String parentShortName, String projectVersion, String includedtableprefixes, boolean ifRpc, String moduleName, String dbUrl, String dbUser, String dbPassword, String dbTables, String basePackage) {
+        this.groupId = groupId;
+        this.parentShortName = parentShortName;
+        this.projectVersion = projectVersion;
+        this.includedtableprefixes = includedtableprefixes;
+        this.ifRpc = ifRpc;
         this.moduleName = moduleName;
         this.dbUrl = dbUrl;
         this.dbUser = dbUser;
         this.dbPassword = dbPassword;
         this.dbTables = dbTables;
-        this.modelPackage = modelPackage;
-        this.servicePackage = servicePackage;
-        this.basePath = PathKit.getWebRootPath() + "/../module-" + moduleName;
+        this.basePackage = basePackage;
+        this.basePath = PathKit.getWebRootPath() + "/../" + parentShortName + "-" + moduleName;
     }
 
     public void gen() {
-
         genModule();
         genPomXml();
         genCode();
-
     }
 
     private void genModule() {
-        String modelPath = basePath + "/module-" + moduleName + "-model";
-        String webPath = basePath + "/module-" + moduleName + "-web";
-        String serviceApiPath = basePath + "/module-" + moduleName + "-service-api";
-        String serviceProviderPath = basePath + "/module-" + moduleName + "-service-provider";
+        String modelPath = basePath + "/" + parentShortName + "-" + moduleName + "-model";
+        String webPath = basePath + "/" + parentShortName + "-" + moduleName + "-web";
+        String serviceApiPath = basePath + "/" + parentShortName + "-" + moduleName + "-service-api";
+        String serviceProviderPath = basePath + "/" + parentShortName + "-" + moduleName + "-service-provider";
 
         File modelFile = new File(modelPath);
         File webFile = new File(webPath);
@@ -69,10 +95,10 @@ public class ModuleGenerator {
     private void genPomXml() {
 
         String modulePath = basePath;
-        String modelPath = basePath + "/module-" + moduleName + "-model";
-        String webPath = basePath + "/module-" + moduleName + "-web";
-        String serviceApiPath = basePath + "/module-" + moduleName + "-service-api";
-        String serviceProviderPath = basePath + "/module-" + moduleName + "-service-provider";
+        String modelPath = basePath + "/" + parentShortName + "-" + moduleName + "-model";
+        String webPath = basePath + "/" + parentShortName + "-" + moduleName + "-web";
+        String serviceApiPath = basePath + "/" + parentShortName + "-" + moduleName + "-service-api";
+        String serviceProviderPath = basePath + "/" + parentShortName + "-" + moduleName + "-service-provider";
 
 
         File modelFile = new File(modelPath);
@@ -85,19 +111,25 @@ public class ModuleGenerator {
         makeSrcDirectory(serviceApiFile);
         makeSrcDirectory(serviceProviderFile);
 
-        Map map = new HashMap();
+        Map<String, Object> map = new HashMap<String, Object>();
         map.put("moduleName", moduleName);
+        map.put("groupId", groupId);
+        map.put("parentShortName", parentShortName);
+        map.put("projectVersion", projectVersion);
+        map.put("ifRpc", ifRpc);
         Engine engine = new Engine();
         engine.setToClassPathSourceFactory();    // 从 class path 内读模板文件
         engine.addSharedMethod(new StrKit());
 
-        engine.getTemplate("io/jpress/codegen/templates/pom_module_template.jf").render(map, new File(modulePath, "pom.xml"));
-        engine.getTemplate("io/jpress/codegen/templates/pom_model_template.jf").render(map, new File(modelFile, "pom.xml"));
-        engine.getTemplate("io/jpress/codegen/templates/pom_web_template.jf").render(map, new File(webFile, "pom.xml"));
-        engine.getTemplate("io/jpress/codegen/templates/pom_service_api_template.jf").render(map, new File(serviceApiFile, "pom.xml"));
-        engine.getTemplate("io/jpress/codegen/templates/pom_service_provider_template.jf").render(map, new File(serviceProviderFile, "pom.xml"));
+        File modulePom = new File(modulePath, "pom.xml");
 
-
+        if (!modulePom.exists()) {
+            engine.getTemplate("com/rlax/lele/framework/codegen/module/templates/pom_module_template.jf").render(map, new File(modulePath, "pom.xml"));
+            engine.getTemplate("com/rlax/lele/framework/codegen/module/templates/pom_model_template.jf").render(map, new File(modelFile, "pom.xml"));
+            engine.getTemplate("com/rlax/lele/framework/codegen/module/templates/pom_web_template.jf").render(map, new File(webFile, "pom.xml"));
+            engine.getTemplate("com/rlax/lele/framework/codegen/module/templates/pom_service_api_template.jf").render(map, new File(serviceApiFile, "pom.xml"));
+            engine.getTemplate("com/rlax/lele/framework/codegen/module/templates/pom_service_provider_template.jf").render(map, new File(serviceProviderFile, "pom.xml"));
+        }
     }
 
     private void makeSrcDirectory(File file) {
@@ -114,14 +146,16 @@ public class ModuleGenerator {
 
     private void genCode() {
 
-        String modelModuleName = "/module-" + moduleName + "-model";
-        String serviceApiModuleName = "/module-" + moduleName + "-service-api";
-        String serviceProviderModuleName = "/module-" + moduleName + "-service-provider";
+        String modelModuleName = "/" + parentShortName + "-" + moduleName + "-model";
+        String serviceApiModuleName = "/" + parentShortName + "-" + moduleName + "-service-api";
+        String serviceProviderModuleName = "/" + parentShortName + "-" + moduleName + "-service-provider";
+        String serviceWebModuleName = "/" + parentShortName + "-" + moduleName + "-web";
 
         JbootApplication.setBootArg("jboot.datasource.url", dbUrl);
         JbootApplication.setBootArg("jboot.datasource.user", dbUser);
         JbootApplication.setBootArg("jboot.datasource.password", dbPassword);
 
+        String modelPackage = basePackage + ".model";
         String baseModelPackage = modelPackage + ".base";
 
         String modelDir = basePath + modelModuleName + "/src/main/java/" + modelPackage.replace(".", "/");
@@ -129,28 +163,47 @@ public class ModuleGenerator {
 
         System.out.println("start generate... dir:" + modelDir);
 
-        List<TableMeta> tableMetaList = CodeGenHelpler.createMetaBuilder().build();
+        DataSource dataSource = CodeGenHelpler.getDatasource();
+        AppMetaBuilder metaBuilder = new AppMetaBuilder(dataSource);
+        List<TableMeta> tableMetaList = metaBuilder.build();
+
         if (StrUtil.isNotBlank(dbTables)) {
             List<TableMeta> newTableMetaList = new ArrayList<TableMeta>();
-            Set<String> excludeTableSet = StrUtil.splitToSet(dbTables, ",");
+
+            Set<String> includeTableSet = StrUtil.splitToSet(dbTables, ",");
+            Set<String> includeTablePreSet = StrUtil.splitToSet(includedtableprefixes, ",");
             for (TableMeta tableMeta : tableMetaList) {
-                if (excludeTableSet.contains(tableMeta.name.toLowerCase())) {
+                if (includeTableSet.contains(tableMeta.name.toLowerCase())) {
                     newTableMetaList.add(tableMeta);
                 }
+
+                // 表前缀
+                for (String pre : includeTablePreSet) {
+                    if (tableMeta.name.toLowerCase().startsWith(pre)) {
+                        newTableMetaList.add(tableMeta);
+                    }
+                }
             }
+
             tableMetaList.clear();
             tableMetaList.addAll(newTableMetaList);
         }
 
+        new BaseModelGenerator(baseModelPackage, baseModelDir).generate(tableMetaList);
+        new ModelGenerator(modelPackage, baseModelPackage, modelDir).generate(tableMetaList);
 
-//        new BaseModelGenerator(baseModelPackage, baseModelDir).generate(tableMetaList);
-//        new ModelGenerator(modelPackage, baseModelPackage, modelDir).generate(tableMetaList);
-//
-//        String apiPath = basePath + serviceApiModuleName + "/src/main/java/" + servicePackage;
-//        String providerPath = basePath + serviceProviderModuleName + "/src/main/java/" + servicePackage + "/provider";
-//
-//        new ServiceApiGenerator(servicePackage, modelPackage, apiPath).generate(tableMetaList);
-//        new ServiceProviderGenerator(servicePackage, modelPackage, providerPath).generate(tableMetaList);
+        String servicePackage = basePackage + ".service.api";
+        String apiPath = basePath + serviceApiModuleName + "/src/main/java/" + servicePackage.replaceAll("\\.", "/");
+        String providerPackage = basePackage + ".service.provider";
+        String providerPath = basePath + serviceProviderModuleName + "/src/main/java/" + providerPackage.replaceAll("\\.", "/");
 
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("ifRpc", ifRpc);
+        new ServiceApiGenerator(servicePackage, modelPackage, apiPath).generate(tableMetaList);
+        new ServiceProviderGenerator(servicePackage, providerPackage, modelPackage, providerPath, map).generate(tableMetaList);
+
+        String webPackage = basePackage + ".service.provider";
+        String webPath = basePath + serviceWebModuleName + "/src/main/java/" + basePackage.replaceAll("\\.", "/") + "/web";
+        new File(webPath).mkdirs();
     }
 }
